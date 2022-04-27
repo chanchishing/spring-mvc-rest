@@ -82,16 +82,19 @@
 							<artifactId>mapstruct-processor</artifactId>
 							<version>${org.mapstruct.version}</version>
 						</path>
-						<!--path>
+						<path>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-							<version>1.18.24</version>
-						</path-->
+							<version>1.18.12</version>
+						</path>
 						<!-- other annotation processors -->
 					</annotationProcessorPaths>
 					<compilerArgs>
 						<compilerArg>
 							-Amapstruct.unmappedTargetPolicy=IGNORE
+						</compilerArg>
+						<compilerArg>
+							-Amapstruct.defaultComponentModel=spring
 						</compilerArg>
 					</compilerArgs>
 				</configuration>
