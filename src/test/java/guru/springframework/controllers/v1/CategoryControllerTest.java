@@ -36,9 +36,7 @@ class CategoryControllerTest {
     private Model mockModel;
     MockMvc mockMvc;
 
-    //public CategoryControllerTest(CategoryController categoryController) {
-    //    this.categoryController = categoryController;
-    //}
+
 
     @BeforeEach
     void setUp() {

@@ -14,11 +14,13 @@ import org.mockito.MockitoAnnotations;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class CustomerServiceImplTest {
     AutoCloseable closeable;
@@ -47,45 +49,24 @@ class CustomerServiceImplTest {
     }
 
     @Test
-    void getCustomerByFirstname() {
+    void getCustomerById() {
         Customer customer1=new Customer();
-        Customer customer2=new Customer();
         Long testID1=7L;
-        Long testID2=8L;
+        String testFirstName="first name";
         customer1.setId(testID1);
-        customer2.setId(testID2);
-        List<Customer> customerList=new ArrayList<Customer>(Arrays.asList(customer1,customer2));
+        customer1.setFirstname(testFirstName);
+        Optional<Customer> customerOptional=Optional.of(customer1);
 
-        when(mockCustomerRepository.findByFirstname(anyString())).thenReturn(customerList);
+        when(mockCustomerRepository.findById(anyLong())).thenReturn(customerOptional);
 
-        List<CustomerDTO> customerDTOList=customerService.getCustomerByFirstname(anyString());
-        assertEquals(customerList.size(),customerDTOList.size());
-        assertEquals(
-                "/shop/customer/"+testID2.toString(),
-                customerDTOList.stream().filter(customerDTO -> customerDTO.getId()==testID2).collect(Collectors.toList())
-                        .stream().findFirst().get().getCustomer_url()
-        );
+        CustomerDTO customerDTO=customerService.getCustomerById(testID1.toString());
+
+        verify(mockCustomerRepository,times(1)).findById(anyLong());
+
+        assertEquals(testID1,customerDTO.getId());
+        assertEquals(testFirstName,customerDTO.getFirstname());
+        assertEquals("/shop/customer/"+testID1.toString(),customerDTO.getCustomer_url());
 
     }
 
-    @Test
-    void getCustomerByLastname() {
-        Customer customer1=new Customer();
-        Customer customer2=new Customer();
-        Long testID1=7L;
-        Long testID2=8L;
-        customer1.setId(testID1);
-        customer2.setId(testID2);
-        List<Customer> customerList=new ArrayList<Customer>(Arrays.asList(customer1,customer2));
-
-        when(mockCustomerRepository.findByLastname(anyString())).thenReturn(customerList);
-
-        List<CustomerDTO> customerDTOList=customerService.getCustomerByLastname(anyString());
-        assertEquals(customerList.size(),customerDTOList.size());
-        assertEquals(
-                "/shop/customer/"+testID1.toString(),
-                customerDTOList.stream().filter(customerDTO -> customerDTO.getId()==testID1).collect(Collectors.toList())
-                        .stream().findFirst().get().getCustomer_url()
-        );
-    }
 }
