@@ -70,4 +70,26 @@ class CustomerServiceImplTest {
 
     }
 
+    @Test
+    void createNewCustomer() {
+        Customer customer1=new Customer();
+        Long testID1=7L;
+        String testFirstName="first name";
+        customer1.setId(testID1);
+        customer1.setFirstname(testFirstName);
+
+        CustomerDTO customerDTO1=new CustomerDTO();
+        customerDTO1.setId(testID1);
+        customerDTO1.setFirstname(testFirstName);
+
+        when(mockCustomerRepository.save(any(Customer.class))).thenReturn(customer1);
+
+        CustomerDTO savedCustomerDTO=customerService.createNewCustomer(customerDTO1);
+
+        verify(mockCustomerRepository,times(1)).save(any(Customer.class));
+        assertEquals(testID1,savedCustomerDTO.getId());
+        assertEquals(testFirstName,savedCustomerDTO.getFirstname());
+        assertEquals("/shop/customer/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
+
+    }
 }

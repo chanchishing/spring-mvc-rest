@@ -34,4 +34,23 @@ class CustomerMapperTest {
         assertEquals("/shop/customer/"+ID.toString(),customerDTO.getCustomer_url());
         
     }
+
+    @Test
+    void customerDTOToCustomer() {
+        //given
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstname(FIRSTNAME);
+        customerDTO.setLastname(LASTNAME);
+        customerDTO.setId(ID);
+
+        //when
+        Customer customer = customerMapper.customerDTOToCustomer(customerDTO);
+
+        //then
+        assertEquals(Long.valueOf(ID), customer.getId());
+        assertEquals(FIRSTNAME, customer.getFirstname());
+        assertEquals(LASTNAME, customer.getLastname());
+
+    }
+
 }

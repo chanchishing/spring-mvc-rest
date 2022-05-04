@@ -12,9 +12,9 @@ import org.mapstruct.factory.Mappers;
 public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    @Mapping(source = "id",target ="id" )
     @Mapping(target = "customer_url", expression = "java(\"/shop/customer/\"+customer.getId())")
-
     CustomerDTO customerToCustomerDTO(Customer customer);
+
+    Customer customerDTOToCustomer(CustomerDTO customerDTO);
 }
 
