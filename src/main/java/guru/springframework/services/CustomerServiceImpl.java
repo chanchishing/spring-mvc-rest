@@ -2,10 +2,10 @@ package guru.springframework.services;
 
 import guru.springframework.api.v1.mapper.CustomerMapper;
 import guru.springframework.api.v1.model.CustomerDTO;
+import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -19,8 +19,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerDTO> getAllCustomers() {
-        return customerRepository.findAll().stream().map(customerMapper::customerToCustomerDTO).collect(Collectors.toList());
+    public CustomerListDTO getAllCustomers() {
+        return new CustomerListDTO(customerRepository.findAll().stream().map(customerMapper::customerToCustomerDTO).collect(Collectors.toList()));
     }
 
     @Override

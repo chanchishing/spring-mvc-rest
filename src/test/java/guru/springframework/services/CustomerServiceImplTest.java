@@ -3,6 +3,7 @@ package guru.springframework.services;
 import guru.springframework.api.v1.mapper.CategoryMapper;
 import guru.springframework.api.v1.mapper.CustomerMapper;
 import guru.springframework.api.v1.model.CustomerDTO;
+import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.domain.Customer;
 import guru.springframework.repositories.CustomerRepository;
 import org.hibernate.mapping.Any;
@@ -44,8 +45,8 @@ class CustomerServiceImplTest {
 
         when(mockCustomerRepository.findAll()).thenReturn(customerList);
 
-        List<CustomerDTO> customerDTOList=customerService.getAllCustomers();
-        assertEquals(customerList.size(),customerDTOList.size());
+        CustomerListDTO customerDTOList=customerService.getAllCustomers();
+        assertEquals(customerList.size(),customerDTOList.getCustomers().size());
     }
 
     @Test

@@ -1,6 +1,7 @@
 package guru.springframework.controllers.v1;
 
 import guru.springframework.api.v1.model.CategoryDTO;
+import guru.springframework.api.v1.model.CategoryListDTO;
 import guru.springframework.services.CategoryService;
 import org.hibernate.annotations.CollectionType;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,7 +61,7 @@ class CategoryControllerTest {
         cat2DTO.setId(cat2ID);
         cat2DTO.setName(cat2Name);
 
-        List<CategoryDTO> categoryDTOList= Arrays.asList(cat1DTO,cat2DTO);
+        CategoryListDTO categoryDTOList= new CategoryListDTO(Arrays.asList(cat1DTO,cat2DTO));
 
         when(mockCategoryService.getAllCategories()).thenReturn(categoryDTOList);
 
@@ -68,7 +69,8 @@ class CategoryControllerTest {
 
         mockMvc.perform(get("/api/v1/categories/").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)));
+                .andExpect(jsonPath("$.categories", hasSize(2)))
+                .andExpect(jsonPath("$.categories[0].id",equalTo(cat1ID.intValue())));
         ;
 
     }

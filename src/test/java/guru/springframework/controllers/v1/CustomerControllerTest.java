@@ -2,6 +2,7 @@ package guru.springframework.controllers.v1;
 
 import guru.springframework.api.v1.model.CategoryDTO;
 import guru.springframework.api.v1.model.CustomerDTO;
+import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -57,7 +58,7 @@ class CustomerControllerTest {
         cust2DTO.setId(cust2ID);
         cust2DTO.setFirstname(cust2Firstname);
 
-        List<CustomerDTO> customerDTOList= Arrays.asList(cust1DTO,cust2DTO);
+        CustomerListDTO customerDTOList= new CustomerListDTO(Arrays.asList(cust1DTO,cust2DTO));
 
         when(mockCustomerService.getAllCustomers()).thenReturn(customerDTOList);
 
@@ -65,8 +66,9 @@ class CustomerControllerTest {
 
         mockMvc.perform(get("/api/v1/customers/").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)));
-        ;
+                .andExpect(jsonPath("$.customers", hasSize(2)))
+                .andExpect(jsonPath("$.customers[0].id",equalTo(cust1ID.intValue())));
+
     }
 
     @Test

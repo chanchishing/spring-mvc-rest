@@ -2,6 +2,7 @@ package guru.springframework.controllers.v1;
 
 import guru.springframework.api.v1.model.CategoryDTO;
 import guru.springframework.api.v1.model.CustomerDTO;
+import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.services.CategoryService;
 import guru.springframework.services.CustomerService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +24,7 @@ public class CustomerController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+    public ResponseEntity<CustomerListDTO> getAllCustomers() {
         return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
     }
 
