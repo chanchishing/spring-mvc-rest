@@ -1,9 +1,7 @@
 package guru.springframework.controllers.v1;
 
-import guru.springframework.api.v1.model.CategoryDTO;
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.api.v1.model.CustomerListDTO;
-import guru.springframework.domain.Customer;
 import guru.springframework.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,16 +12,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
-import java.util.List;
 
 import static guru.springframework.controllers.v1.AbstractRestControllerTest.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -112,11 +107,36 @@ class CustomerControllerTest {
                             .content(asJsonString(custDTOToSave)))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$.id",equalTo(cust1ID.intValue())))
-                        .andExpect(jsonPath("$.firstname",equalTo(cust1Firstname)))
-        //                .andExpect(jsonPath("$.customer_url",equalTo("/api/v1/customers/"+cust1ID.toString())))
-        ;
+                        .andExpect(jsonPath("$.firstname",equalTo(cust1Firstname)));
+
+    }
+
+    @Test
+    void saveCustomer() throws Exception {
+        Long cust1ID=1L;
+        String cust1Firstname="Customer 1 First name";
+
+        CustomerDTO custDTOToSave=new CustomerDTO();
+        custDTOToSave.setId(cust1ID);
+        custDTOToSave.setFirstname(cust1Firstname);
+
+        CustomerDTO savedCustDTO=new CustomerDTO();
+        savedCustDTO.setId(cust1ID);
+        savedCustDTO.setFirstname(cust1Firstname);
+
+
+        when(mockCustomerService.saveCustomer(anyString(),any(CustomerDTO.class))).thenReturn(savedCustDTO);
+
+        mockMvc.perform(put("/api/v1/customers/"+ cust1ID.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(custDTOToSave))
+                )
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",equalTo(cust1ID.intValue())))
+                .andExpect(jsonPath("$.firstname",equalTo(cust1Firstname)));
 
     }
 
 
-    }
+}
