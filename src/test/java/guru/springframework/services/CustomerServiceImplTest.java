@@ -60,7 +60,7 @@ class CustomerServiceImplTest {
 
         when(mockCustomerRepository.findById(anyLong())).thenReturn(customerOptional);
 
-        CustomerDTO customerDTO=customerService.getCustomerById(testID1.toString());
+        CustomerDTO customerDTO=customerService.getCustomerById(testID1);
 
         verify(mockCustomerRepository,times(1)).findById(anyLong());
 
@@ -108,7 +108,7 @@ class CustomerServiceImplTest {
 
         when(mockCustomerRepository.save(any(Customer.class))).thenReturn(customer1);
 
-        CustomerDTO savedCustomerDTO=customerService.saveCustomer(testID1.toString(),customerDTO1);
+        CustomerDTO savedCustomerDTO=customerService.saveCustomer(testID1,customerDTO1);
         verify(mockCustomerRepository,times(1)).save(any(Customer.class));
         assertEquals(testID1,savedCustomerDTO.getId());
         assertEquals(testFirstName,savedCustomerDTO.getFirstname());

@@ -78,9 +78,9 @@ class CustomerControllerTest {
         cust1DTO.setFirstname(cust1Firstname);
 
 
-        when(mockCustomerService.getCustomerById(anyString())).thenReturn(cust1DTO);
+        when(mockCustomerService.getCustomerById(anyLong())).thenReturn(cust1DTO);
 
-        mockMvc.perform(get("/api/v1/customers/anyString").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v1/customers/"+cust1ID.toString()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(cust1ID.intValue())))
                 .andExpect(jsonPath("$.firstname", equalTo(cust1Firstname)));
@@ -125,7 +125,7 @@ class CustomerControllerTest {
         savedCustDTO.setFirstname(cust1Firstname);
 
 
-        when(mockCustomerService.saveCustomer(anyString(),any(CustomerDTO.class))).thenReturn(savedCustDTO);
+        when(mockCustomerService.saveCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(savedCustDTO);
 
         mockMvc.perform(put("/api/v1/customers/"+ cust1ID.toString())
                         .contentType(MediaType.APPLICATION_JSON)

@@ -33,12 +33,12 @@ public class CustomerController {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable String id) {
+    public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
         return new ResponseEntity<>(customerService.getCustomerById(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CustomerDTO> saveCustomer(@PathVariable String id,@RequestBody CustomerDTO customerDTO) {
+    public ResponseEntity<CustomerDTO> saveCustomer(@PathVariable Long id,@RequestBody CustomerDTO customerDTO) {
         return new ResponseEntity<>(customerService.saveCustomer(id,customerDTO), HttpStatus.OK);
     }
 
