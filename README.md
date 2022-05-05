@@ -1,4 +1,6 @@
 [![CircleCI](https://circleci.com/gh/chanchishing/spring-mvc-rest/tree/master.svg?style=svg)](https://circleci.com/gh/chanchishing/spring-mvc-rest/tree/master)
+
+[![codecov](https://codecov.io/gh/chanchishing/spring-mvc-rest/branch/master/graph/badge.svg?token=ZXVKV7FTA3)](https://codecov.io/gh/chanchishing/spring-mvc-rest)
 # Spring-mvc-rest
 This is the MVC-rest Project of the course that I code along when taking the Udmey course "Spring Framework 5: Beginner to Guru"
 
