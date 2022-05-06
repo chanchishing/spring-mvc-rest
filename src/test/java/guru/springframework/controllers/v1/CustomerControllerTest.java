@@ -139,4 +139,34 @@ class CustomerControllerTest {
     }
 
 
+    @Test
+    void patchCustomer() throws Exception {
+        Long cust1ID=1L;
+        String cust1Firstname="Customer 1 First name";
+        String cust1FirstnameToPatch="Customer 1 Patch First name";
+
+
+        CustomerDTO custDTOToPatch=new CustomerDTO();
+        custDTOToPatch.setId(cust1ID);
+        custDTOToPatch.setFirstname(cust1FirstnameToPatch);
+
+        CustomerDTO patchedCustDTO=new CustomerDTO();
+        patchedCustDTO.setId(cust1ID);
+        patchedCustDTO.setFirstname(cust1FirstnameToPatch);
+
+
+        when(mockCustomerService.patchCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(patchedCustDTO);
+
+        mockMvc.perform(patch("/api/v1/customers/"+ cust1ID.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(custDTOToPatch))
+                )
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",equalTo(cust1ID.intValue())))
+                .andExpect(jsonPath("$.firstname",equalTo(cust1FirstnameToPatch)));
+
+    }
+
+
 }
