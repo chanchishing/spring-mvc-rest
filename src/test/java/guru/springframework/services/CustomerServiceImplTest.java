@@ -12,10 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -113,6 +110,16 @@ class CustomerServiceImplTest {
         assertEquals(testID1,savedCustomerDTO.getId());
         assertEquals(testFirstName,savedCustomerDTO.getFirstname());
         assertEquals("/shop/customer/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
+
+    }
+
+    @Test
+    void deleteCustomer() {
+       Long testID1=7L;
+
+       assertThrows(NoSuchElementException.class,()->{customerService.deleteCustomer(testID1);});
+
+       verify(mockCustomerRepository,times(1)).findById(testID1);
 
     }
 }

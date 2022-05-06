@@ -7,6 +7,7 @@ import guru.springframework.domain.Customer;
 import guru.springframework.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -66,5 +67,15 @@ public class CustomerServiceImpl implements CustomerService {
             return customerMapper.customerToCustomerDTO(customerRepository.save(customer));
         }).orElseThrow(RuntimeException::new); //todo implement better exception handling;
     }
+
+    @Override
+    public void deleteCustomer(Long id) {
+
+        customerRepository.findById(id).map(customer -> {
+            customerRepository.deleteById(id);
+            return Optional.empty();
+        }).orElseThrow();
+    }
+
 
 }
