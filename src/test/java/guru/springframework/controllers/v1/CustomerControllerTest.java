@@ -17,7 +17,7 @@ import static guru.springframework.controllers.v1.AbstractRestControllerTest.asJ
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -169,4 +169,13 @@ class CustomerControllerTest {
     }
 
 
+    @Test
+    void deleteCustomer() throws Exception {
+        Long cust1ID=1L;
+
+        mockMvc.perform(delete("/api/v1/customers/"+ cust1ID.toString()))
+                .andExpect(status().isOk());
+
+        verify(mockCustomerService,times(1)).deleteCustomer(cust1ID);
+    }
 }
