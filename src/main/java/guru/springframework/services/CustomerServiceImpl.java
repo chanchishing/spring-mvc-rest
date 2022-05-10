@@ -4,6 +4,7 @@ import guru.springframework.api.v1.mapper.CustomerMapper;
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.domain.Customer;
+import guru.springframework.exceptions.ResourceNotFoundException;
 import guru.springframework.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
@@ -27,7 +28,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerDTO getCustomerById(Long id) {
-        return customerMapper.customerToCustomerDTO(customerRepository.findById(Long.valueOf(id)).orElseThrow());
+        return customerMapper.customerToCustomerDTO(customerRepository.findById(Long.valueOf(id)).orElseThrow(ResourceNotFoundException::new));
     }
 
     @Override
@@ -65,7 +66,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
 
             return customerMapper.customerToCustomerDTO(customerRepository.save(customer));
-        }).orElseThrow(RuntimeException::new); //todo implement better exception handling;
+        }).orElseThrow(ResourceNotFoundException::new); //todo implement better exception handling;
     }
 
     @Override
@@ -74,7 +75,7 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.findById(id).map(customer -> {
             customerRepository.deleteById(id);
             return Optional.empty();
-        }).orElseThrow();
+        }).orElseThrow(ResourceNotFoundException::new);
     }
 
 

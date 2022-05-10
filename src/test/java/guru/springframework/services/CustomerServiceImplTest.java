@@ -6,6 +6,7 @@ import guru.springframework.api.v1.model.Constant;
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.domain.Customer;
+import guru.springframework.exceptions.ResourceNotFoundException;
 import guru.springframework.repositories.CustomerRepository;
 import org.hibernate.mapping.Any;
 import org.junit.jupiter.api.BeforeEach;
@@ -118,7 +119,7 @@ class CustomerServiceImplTest {
     void deleteCustomer() {
        Long testID1=7L;
 
-       assertThrows(NoSuchElementException.class,()->{customerService.deleteCustomer(testID1);});
+       assertThrows(ResourceNotFoundException.class,()->{customerService.deleteCustomer(testID1);});
 
        verify(mockCustomerRepository,times(1)).findById(testID1);
 

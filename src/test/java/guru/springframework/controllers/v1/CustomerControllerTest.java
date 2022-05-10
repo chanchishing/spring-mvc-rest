@@ -2,6 +2,8 @@ package guru.springframework.controllers.v1;
 
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.api.v1.model.CustomerListDTO;
+import guru.springframework.controllers.RestResponseEntityExceptionHandler;
+import guru.springframework.exceptions.ResourceNotFoundException;
 import guru.springframework.services.CustomerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -39,7 +41,7 @@ class CustomerControllerTest {
         closeable = MockitoAnnotations.openMocks(this);
         customerController = new CustomerController(mockCustomerService);
         mockMvc = MockMvcBuilders.standaloneSetup(customerController)
-                //.setControllerAdvice(new ControllerExceptionHandler())
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
                 .build();
     }
 
@@ -178,5 +180,16 @@ class CustomerControllerTest {
                 .andExpect(status().isOk());
 
         verify(mockCustomerService,times(1)).deleteCustomer(cust1ID);
+    }
+
+    @Test
+    public void testNotFoundException() throws Exception {
+        Long cust1ID=1L;
+
+        when(mockCustomerService.getCustomerById(anyLong())).thenThrow(ResourceNotFoundException.class);
+
+        mockMvc.perform(get(Constant.API_V_1_CUSTOMERS_URL + cust1ID.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound());
     }
 }
