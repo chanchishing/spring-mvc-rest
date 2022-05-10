@@ -25,6 +25,8 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import guru.springframework.api.v1.model.Constant;
+
 class CategoryControllerTest {
 
     private AutoCloseable closeable;
@@ -67,7 +69,7 @@ class CategoryControllerTest {
 
         categoryController.getAllCategories();
 
-        mockMvc.perform(get("/api/v1/categories/").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(Constant.API_V_1_CATEGORIES_URL).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categories", hasSize(2)))
                 .andExpect(jsonPath("$.categories[0].id",equalTo(cat1ID.intValue())));
@@ -85,7 +87,7 @@ class CategoryControllerTest {
 
         when(mockCategoryService.getCategoryByName(anyString())).thenReturn(cat1);
 
-        mockMvc.perform(get("/api/v1/categories/anyString").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(Constant.API_V_1_CATEGORIES_URL+"/anyString").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(cat1ID.intValue())))
                 .andExpect(jsonPath("$.name", equalTo(cat1Name)));

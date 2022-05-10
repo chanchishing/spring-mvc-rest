@@ -1,6 +1,7 @@
 package guru.springframework.api.v1.mapper;
 
 import guru.springframework.api.v1.model.CategoryDTO;
+import guru.springframework.api.v1.model.Constant;
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.domain.Customer;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class CustomerMapperTest {
         assertEquals(Long.valueOf(ID), customerDTO.getId());
         assertEquals(FIRSTNAME, customerDTO.getFirstname());
         assertEquals(LASTNAME, customerDTO.getLastname());
-        assertEquals("/shop/customer/"+ID.toString(),customerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+ID.toString(),customerDTO.getCustomer_url());
         
     }
 

@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import guru.springframework.api.v1.model.Constant;
 
 import java.util.Arrays;
 
@@ -62,7 +63,7 @@ class CustomerControllerTest {
 
         customerController.getAllCustomers();
 
-        mockMvc.perform(get("/api/v1/customers/").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(Constant.API_V_1_CUSTOMERS_URL).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(2)))
                 .andExpect(jsonPath("$.customers[0].id",equalTo(cust1ID.intValue())));
@@ -80,7 +81,7 @@ class CustomerControllerTest {
 
         when(mockCustomerService.getCustomerById(anyLong())).thenReturn(cust1DTO);
 
-        mockMvc.perform(get("/api/v1/customers/"+cust1ID.toString()).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(Constant.API_V_1_CUSTOMERS_URL+"/"+cust1ID.toString()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(cust1ID.intValue())))
                 .andExpect(jsonPath("$.firstname", equalTo(cust1Firstname)));
@@ -102,7 +103,7 @@ class CustomerControllerTest {
 
         when(mockCustomerService.createNewCustomer(any(CustomerDTO.class))).thenReturn(savedCustDTO);
 
-        mockMvc.perform(post("/api/v1/customers/")
+        mockMvc.perform(post(Constant.API_V_1_CUSTOMERS_URL)
                             .contentType(MediaType.APPLICATION_JSON)
                             .content(asJsonString(custDTOToSave)))
                         .andExpect(status().isCreated())
@@ -127,7 +128,7 @@ class CustomerControllerTest {
 
         when(mockCustomerService.saveCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(savedCustDTO);
 
-        mockMvc.perform(put("/api/v1/customers/"+ cust1ID.toString())
+        mockMvc.perform(put(Constant.API_V_1_CUSTOMERS_URL+"/"+ cust1ID.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(custDTOToSave))
                 )
@@ -157,7 +158,7 @@ class CustomerControllerTest {
 
         when(mockCustomerService.patchCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(patchedCustDTO);
 
-        mockMvc.perform(patch("/api/v1/customers/"+ cust1ID.toString())
+        mockMvc.perform(patch(Constant.API_V_1_CUSTOMERS_URL+"/"+ cust1ID.toString())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(custDTOToPatch))
                 )
@@ -173,7 +174,7 @@ class CustomerControllerTest {
     void deleteCustomer() throws Exception {
         Long cust1ID=1L;
 
-        mockMvc.perform(delete("/api/v1/customers/"+ cust1ID.toString()))
+        mockMvc.perform(delete(Constant.API_V_1_CUSTOMERS_URL+"/"+ cust1ID.toString()))
                 .andExpect(status().isOk());
 
         verify(mockCustomerService,times(1)).deleteCustomer(cust1ID);

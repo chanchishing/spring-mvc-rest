@@ -2,6 +2,7 @@ package guru.springframework.services;
 
 import guru.springframework.api.v1.mapper.CategoryMapper;
 import guru.springframework.api.v1.mapper.CustomerMapper;
+import guru.springframework.api.v1.model.Constant;
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.domain.Customer;
@@ -63,7 +64,7 @@ class CustomerServiceImplTest {
 
         assertEquals(testID1,customerDTO.getId());
         assertEquals(testFirstName,customerDTO.getFirstname());
-        assertEquals("/shop/customer/"+testID1.toString(),customerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),customerDTO.getCustomer_url());
 
     }
 
@@ -86,7 +87,7 @@ class CustomerServiceImplTest {
         verify(mockCustomerRepository,times(1)).save(any(Customer.class));
         assertEquals(testID1,savedCustomerDTO.getId());
         assertEquals(testFirstName,savedCustomerDTO.getFirstname());
-        assertEquals("/shop/customer/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
 
     }
 
@@ -109,7 +110,7 @@ class CustomerServiceImplTest {
         verify(mockCustomerRepository,times(1)).save(any(Customer.class));
         assertEquals(testID1,savedCustomerDTO.getId());
         assertEquals(testFirstName,savedCustomerDTO.getFirstname());
-        assertEquals("/shop/customer/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
 
     }
 
