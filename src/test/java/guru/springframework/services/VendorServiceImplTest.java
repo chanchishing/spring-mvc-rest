@@ -78,29 +78,28 @@ class VendorServiceImplTest {
         String testName="vendor name";
         vendor1.setId(testID1);
         vendor1.setName(testName);
-
         VendorDTO vendorDTO1=new VendorDTO();
         vendorDTO1.setId(testID1);
         vendorDTO1.setName(testName);
+        given(mockVendorRepository.save(any(Vendor.class))).willReturn(vendor1);
 
-        when(mockVendorRepository.save(any(Vendor.class))).thenReturn(vendor1);
 
         VendorDTO savedVendorDTO = vendorService.createNewVendor(vendorDTO1);
 
-        verify(mockVendorRepository,times(1)).save(any(Vendor.class));
-        assertEquals(testID1,savedVendorDTO.getId());
-        assertEquals(testName,savedVendorDTO.getName());
-        assertEquals(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString(),savedVendorDTO.getVendor_url());
 
+        then(mockVendorRepository).should(times(1)).save(any(Vendor.class));
+        assertThat(savedVendorDTO.getId(),is(equalTo(testID1)));
+        assertThat(savedVendorDTO.getName(),is(equalTo(testName)));
+        assertThat(savedVendorDTO.getVendor_url(),is(equalTo(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString())));
     }
 
     @Test
-    void deleteVendor() {
+    void deleteVendorNotFound() {
         Long testID1=7L;
 
         assertThrows(ResourceNotFoundException.class,()->{vendorService.deleteVendor(testID1);});
 
-        verify(mockVendorRepository,times(1)).findById(testID1);
+        then(mockVendorRepository).should(times(1)).findById(testID1);
 
     }
 
@@ -111,22 +110,21 @@ class VendorServiceImplTest {
         String testName="vendor name";
         vendor1.setId(testID1);
         vendor1.setName(testName);
-
         VendorDTO vendorDTO1=new VendorDTO();
         vendorDTO1.setId(testID1);
         vendorDTO1.setName(testName);
 
         //This mock setup cannot test patch service internal logic.
         //This unit test only verify service, repository components are wired up as expected
-        when(mockVendorRepository.findById(anyLong())).thenReturn(Optional.of(vendor1));
-        when(mockVendorRepository.save(any(Vendor.class))).thenReturn(vendor1);
+        given(mockVendorRepository.findById(anyLong())).willReturn(Optional.of(vendor1));
+        given(mockVendorRepository.save(any(Vendor.class))).willReturn(vendor1);
 
         VendorDTO patchedVendorDTO=vendorService.patchVendor(testID1,vendorDTO1);
 
-        verify(mockVendorRepository,times(1)).save(any(Vendor.class));
-        assertEquals(testID1,patchedVendorDTO.getId());
-        assertEquals(testName,patchedVendorDTO.getName());
-        assertEquals(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString(),patchedVendorDTO.getVendor_url());
+        then(mockVendorRepository).should(times(1)).save(any(Vendor.class));
+        assertThat(patchedVendorDTO.getId(),is(equalTo(testID1)));
+        assertThat(patchedVendorDTO.getName(),is(equalTo(testName)));
+        assertThat(patchedVendorDTO.getVendor_url(),is(equalTo(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString())));
 
     }
 
@@ -137,19 +135,17 @@ class VendorServiceImplTest {
         String testName="vendor name";
         vendor1.setId(testID1);
         vendor1.setName(testName);
-
         VendorDTO vendorDTO1=new VendorDTO();
         vendorDTO1.setId(testID1);
         vendorDTO1.setName(testName);
-
-        when(mockVendorRepository.save(any(Vendor.class))).thenReturn(vendor1);
+        given(mockVendorRepository.save(any(Vendor.class))).willReturn(vendor1);
 
         VendorDTO savedVendorDTO=vendorService.saveVendor(testID1,vendorDTO1);
 
-        verify(mockVendorRepository,times(1)).save(any(Vendor.class));
-        assertEquals(testID1,savedVendorDTO.getId());
-        assertEquals(testName,savedVendorDTO.getName());
-        assertEquals(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString(),savedVendorDTO.getVendor_url());
+        then(mockVendorRepository).should(times(1)).save(any(Vendor.class));
+        assertThat(savedVendorDTO.getId(),is(equalTo(testID1)));
+        assertThat(savedVendorDTO.getName(),is(equalTo(testName)));
+        assertThat(savedVendorDTO.getVendor_url(),is(equalTo(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString())));
 
     }
 
