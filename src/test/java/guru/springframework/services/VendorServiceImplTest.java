@@ -101,4 +101,54 @@ class VendorServiceImplTest {
         verify(mockVendorRepository,times(1)).findById(testID1);
 
     }
+
+    @Test
+    void patchVendor() {
+        Vendor vendor1=new Vendor();
+        Long testID1=7L;
+        String testName="vendor name";
+        vendor1.setId(testID1);
+        vendor1.setName(testName);
+
+        VendorDTO vendorDTO1=new VendorDTO();
+        vendorDTO1.setId(testID1);
+        vendorDTO1.setName(testName);
+
+        //This mock setup cannot test patch service internal logic.
+        //This unit test only verify service, repository components are wired up as expected
+        when(mockVendorRepository.findById(anyLong())).thenReturn(Optional.of(vendor1));
+        when(mockVendorRepository.save(any(Vendor.class))).thenReturn(vendor1);
+
+        VendorDTO patchedVendorDTO=vendorService.patchVendor(testID1,vendorDTO1);
+
+        verify(mockVendorRepository,times(1)).save(any(Vendor.class));
+        assertEquals(testID1,patchedVendorDTO.getId());
+        assertEquals(testName,patchedVendorDTO.getName());
+        assertEquals(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString(),patchedVendorDTO.getVendor_url());
+
+    }
+
+    @Test
+    void saveVendor() {
+        Vendor vendor1=new Vendor();
+        Long testID1=7L;
+        String testName="vendor name";
+        vendor1.setId(testID1);
+        vendor1.setName(testName);
+
+        VendorDTO vendorDTO1=new VendorDTO();
+        vendorDTO1.setId(testID1);
+        vendorDTO1.setName(testName);
+
+        when(mockVendorRepository.save(any(Vendor.class))).thenReturn(vendor1);
+
+        VendorDTO savedVendorDTO=vendorService.saveVendor(testID1,vendorDTO1);
+
+        verify(mockVendorRepository,times(1)).save(any(Vendor.class));
+        assertEquals(testID1,savedVendorDTO.getId());
+        assertEquals(testName,savedVendorDTO.getName());
+        assertEquals(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString(),savedVendorDTO.getVendor_url());
+
+    }
+
 }

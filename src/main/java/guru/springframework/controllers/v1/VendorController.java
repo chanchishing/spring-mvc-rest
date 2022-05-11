@@ -42,4 +42,16 @@ public class VendorController {
         return null;
     }
 
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public VendorDTO patchVendor(@PathVariable Long id,@RequestBody VendorDTO vendorDTO) {
+        return vendorService.patchVendor(id,vendorDTO);
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public VendorDTO saveVendor(@PathVariable Long id,@RequestBody VendorDTO vendorDTO) {
+        return vendorService.saveVendor(id,vendorDTO);
+    }
+
 }

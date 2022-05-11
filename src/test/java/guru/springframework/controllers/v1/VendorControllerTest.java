@@ -136,4 +136,59 @@ class VendorControllerTest {
         verify(mockVendorService,times(1)).deleteVendor(vendor1ID);
     }
 
+    @Test
+    void patchVendor() throws Exception {
+        Long vendor1ID=1L;
+        String vendor1Name="Vendor 1 Name";
+        String vendor1NameToPatch="Vendor 1 Patch Name";
+
+
+        VendorDTO vendorDTOToPatch=new VendorDTO();
+        vendorDTOToPatch.setId(vendor1ID);
+        vendorDTOToPatch.setName(vendor1NameToPatch);
+
+        VendorDTO patchedVendorDTO=new VendorDTO();
+        patchedVendorDTO.setId(vendor1ID);
+        patchedVendorDTO.setName(vendor1NameToPatch);
+
+
+        when(mockVendorService.patchVendor(anyLong(),any(VendorDTO.class))).thenReturn(patchedVendorDTO);
+
+        mockMvc.perform(patch(Constant.API_V_1_VENDORS_URL+"/"+ vendor1ID.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(vendorDTOToPatch))
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",equalTo(vendor1ID.intValue())))
+                .andExpect(jsonPath("$.name",equalTo(vendor1NameToPatch)));
+
+    }
+
+    @Test
+    void saveVendor() throws Exception {
+        Long vendor1ID=1L;
+        String vendor1Name="Vendor 1 Name";
+
+        VendorDTO vendorDTOToSave=new VendorDTO();
+        vendorDTOToSave.setId(vendor1ID);
+        vendorDTOToSave.setName(vendor1Name);
+
+        VendorDTO savedVendorDTO=new VendorDTO();
+        savedVendorDTO.setId(vendor1ID);
+        savedVendorDTO.setName(vendor1Name);
+
+
+        when(mockVendorService.saveVendor(anyLong(),any(VendorDTO.class))).thenReturn(savedVendorDTO);
+
+        mockMvc.perform(put(Constant.API_V_1_VENDORS_URL+"/"+ vendor1ID.toString())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(vendorDTOToSave))
+                )
+
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id",equalTo(vendor1ID.intValue())))
+                .andExpect(jsonPath("$.name",equalTo(vendor1Name)));
+
+    }
+
 }
