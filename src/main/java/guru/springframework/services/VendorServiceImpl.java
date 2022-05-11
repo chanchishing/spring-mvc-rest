@@ -7,6 +7,7 @@ import guru.springframework.exceptions.ResourceNotFoundException;
 import guru.springframework.repositories.VendorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,4 +35,18 @@ public class VendorServiceImpl implements VendorService {
     public VendorDTO getVendorById(Long id) {
         return vendorMapper.vendorToVendorDTO(vendorRepository.findById(id).orElseThrow(ResourceNotFoundException::new));
     }
+
+    @Override
+    public VendorDTO createNewVendor(VendorDTO vendorDTO) {
+        return vendorMapper.vendorToVendorDTO(vendorRepository.save(vendorMapper.vendorDTOToVendor(vendorDTO)));
+    }
+
+    @Override
+    public void deleteVendor(Long id) {
+        vendorRepository.findById(id).map(vendor -> {
+            vendorRepository.deleteById(id);
+            return Optional.empty();
+        }).orElseThrow(ResourceNotFoundException::new);
+    }
+
 }

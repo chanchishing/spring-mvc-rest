@@ -15,13 +15,13 @@ import org.springframework.ui.Model;
 
 import java.util.Arrays;
 
+import static guru.springframework.controllers.v1.AbstractRestControllerTest.asJsonString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -103,4 +103,37 @@ class VendorControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    void createNewVendor() throws Exception {
+        Long vendor1ID=1L;
+        String vendor1Name="Vendor 1 name";
+
+        VendorDTO vendorDTOToSave=new VendorDTO();
+        vendorDTOToSave.setId(vendor1ID);
+        vendorDTOToSave.setName(vendor1Name);
+
+        VendorDTO savedVendorDTO=new VendorDTO();
+        savedVendorDTO.setId(vendor1ID);
+        savedVendorDTO.setName(vendor1Name);
+
+        when(mockVendorService.createNewVendor(any(VendorDTO.class))).thenReturn(savedVendorDTO);
+
+        mockMvc.perform(post(Constant.API_V_1_VENDORS_URL).contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(vendorDTOToSave)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", equalTo(vendor1ID.intValue())))
+                .andExpect(jsonPath("$.name", equalTo(vendor1Name)));
+    }
+
+    @Test
+    void deleteVendor() throws Exception {
+        Long vendor1ID=1L;
+
+        mockMvc.perform(delete(Constant.API_V_1_VENDORS_URL+"/"+ vendor1ID.toString()))
+                .andExpect(status().isOk());
+
+        verify(mockVendorService,times(1)).deleteVendor(vendor1ID);
+    }
+
 }

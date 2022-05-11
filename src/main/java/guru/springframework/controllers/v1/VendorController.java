@@ -4,6 +4,7 @@ import guru.springframework.api.v1.model.*;
 import guru.springframework.services.CategoryService;
 import guru.springframework.services.VendorService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,6 +27,19 @@ public class VendorController {
     @ResponseStatus(HttpStatus.OK)
     public VendorDTO getVendorById(@PathVariable Long id) {
         return vendorService.getVendorById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public VendorDTO createNewVendor(@RequestBody VendorDTO vendorDTO) {
+        return vendorService.createNewVendor(vendorDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<Void> deleteVendor(@PathVariable Long id) {
+        vendorService.deleteVendor(id);
+        return null;
     }
 
 }

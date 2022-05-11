@@ -5,6 +5,7 @@ import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.*;
 import guru.springframework.domain.Customer;
 import guru.springframework.domain.Vendor;
+import guru.springframework.exceptions.ResourceNotFoundException;
 import guru.springframework.repositories.CustomerRepository;
 import guru.springframework.repositories.VendorRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -68,4 +69,36 @@ class VendorServiceImplTest {
 
     }
 
+    @Test
+    void createNewVendor() {
+        Vendor vendor1=new Vendor();
+        Long testID1=7L;
+        String testName="vendor name";
+        vendor1.setId(testID1);
+        vendor1.setName(testName);
+
+        VendorDTO vendorDTO1=new VendorDTO();
+        vendorDTO1.setId(testID1);
+        vendorDTO1.setName(testName);
+
+        when(mockVendorRepository.save(any(Vendor.class))).thenReturn(vendor1);
+
+        VendorDTO savedVendorDTO = vendorService.createNewVendor(vendorDTO1);
+
+        verify(mockVendorRepository,times(1)).save(any(Vendor.class));
+        assertEquals(testID1,savedVendorDTO.getId());
+        assertEquals(testName,savedVendorDTO.getName());
+        assertEquals(Constant.API_V_1_VENDORS_URL+"/"+testID1.toString(),savedVendorDTO.getVendor_url());
+
+    }
+
+    @Test
+    void deleteVendor() {
+        Long testID1=7L;
+
+        assertThrows(ResourceNotFoundException.class,()->{vendorService.deleteVendor(testID1);});
+
+        verify(mockVendorRepository,times(1)).findById(testID1);
+
+    }
 }
