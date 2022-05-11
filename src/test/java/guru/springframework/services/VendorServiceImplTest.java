@@ -1,12 +1,10 @@
 package guru.springframework.services;
 
-import guru.springframework.api.v1.mapper.CustomerMapper;
+
 import guru.springframework.api.v1.mapper.VendorMapper;
 import guru.springframework.api.v1.model.*;
-import guru.springframework.domain.Customer;
 import guru.springframework.domain.Vendor;
 import guru.springframework.exceptions.ResourceNotFoundException;
-import guru.springframework.repositories.CustomerRepository;
 import guru.springframework.repositories.VendorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,10 +13,15 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.*;
 
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
-
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 class VendorServiceImplTest {
 
@@ -56,18 +59,17 @@ class VendorServiceImplTest {
         vendor1.setId(testID1);
         vendor1.setName(testName);
         Optional<Vendor> vendorOptional = Optional.of(vendor1);
-
-        when(mockVendorRepository.findById(anyLong())).thenReturn(vendorOptional);
+        given(mockVendorRepository.findById(anyLong())).willReturn(vendorOptional);
 
         VendorDTO vendorDTO = vendorService.getVendorById(testID1);
 
-        //verify(mockVendorRepository,times(1)).findById(testID1);
-
-        assertEquals(testID1, vendorDTO.getId());
-        assertEquals(testName, vendorDTO.getName());
-        assertEquals(Constant.API_V_1_VENDORS_URL + "/" + testID1.toString(), vendorDTO.getVendor_url());
+        then(mockVendorRepository).should(times(1)).findById(testID1);
+        assertThat(vendorDTO.getId(), is(equalTo(testID1)));
+        assertThat(vendorDTO.getName(), is(equalTo(testName)));
+        assertThat(vendorDTO.getVendor_url(),is(equalTo(Constant.API_V_1_VENDORS_URL + "/" + testID1.toString())));
 
     }
+
 
     @Test
     void createNewVendor() {
