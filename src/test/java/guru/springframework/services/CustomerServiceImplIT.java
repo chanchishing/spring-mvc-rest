@@ -6,6 +6,7 @@ import guru.springframework.bootstrap.Bootstrap;
 import guru.springframework.domain.Customer;
 import guru.springframework.repositories.CategoryRepository;
 import guru.springframework.repositories.CustomerRepository;
+import guru.springframework.repositories.VendorRepository;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -23,6 +24,9 @@ public class CustomerServiceImplIT {
     @Autowired
     CustomerRepository customerRepository;
 
+    @Autowired
+    VendorRepository vendorRepository;
+
     CustomerServiceImpl customerService;
 
     @BeforeAll
@@ -33,7 +37,7 @@ public class CustomerServiceImplIT {
 
     @BeforeEach
     void setUpForEachTest() throws Exception {
-        Bootstrap bootstrap = new Bootstrap(categoryRepository,customerRepository);
+        Bootstrap bootstrap = new Bootstrap(categoryRepository,customerRepository,vendorRepository);
         bootstrap.run();
     }
 
