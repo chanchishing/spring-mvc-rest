@@ -37,11 +37,7 @@ class CategoryControllerTest {
 
     @Mock
     private CategoryService mockCategoryService;
-    @Mock
-    private Model mockModel;
     MockMvc mockMvc;
-
-
 
     @BeforeEach
     void setUp() {

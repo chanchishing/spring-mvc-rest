@@ -8,6 +8,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -27,28 +30,21 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@WebMvcTest(controllers={VendorController.class})
 class VendorControllerTest {
 
-    private AutoCloseable closeable;
-
-    VendorController vendorController;
-
-    @Mock
+    @MockBean
     VendorServiceImpl mockVendorService;
 
-    @Mock
-    private Model mockModel;
+    //@Mock
+    //private Model mockModel;
+    @Autowired
     MockMvc mockMvc;
 
 
 
     @BeforeEach
     void setUp() {
-        closeable = MockitoAnnotations.openMocks(this);
-        vendorController = new VendorController(mockVendorService);
-        mockMvc = MockMvcBuilders.standaloneSetup(vendorController)
-                .setControllerAdvice(new RestResponseEntityExceptionHandler())
-                .build();
     }
 
     @Test
@@ -68,7 +64,7 @@ class VendorControllerTest {
 
         given(mockVendorService.getAllVendors()).willReturn(vendorDTOList);
 
-        vendorController.getAllVendors();
+        //vendorController.getAllVendors();
 
         mockMvc.perform(get(Constant.API_V_1_VENDORS_URL).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
