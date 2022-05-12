@@ -4,10 +4,12 @@ import guru.springframework.api.v1.model.Constant;
 import guru.springframework.api.v1.model.CustomerDTO;
 import guru.springframework.api.v1.model.CustomerListDTO;
 import guru.springframework.services.CustomerService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@Tag(name = "customer-controller", description = "This is the Customer controller")
 @RestController
 @RequestMapping(Constant.API_V_1_CUSTOMERS_URL)
 public class CustomerController {
@@ -16,7 +18,7 @@ public class CustomerController {
     public CustomerController(CustomerService customerService) {
         this.customerService = customerService;
     }
-
+    @Operation(summary = "This lists all customers", description = "More detailed description goes here")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CustomerListDTO getAllCustomers() {
