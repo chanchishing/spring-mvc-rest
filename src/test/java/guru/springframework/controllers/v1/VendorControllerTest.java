@@ -20,6 +20,8 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -64,7 +66,7 @@ class VendorControllerTest {
 
         VendorListDTO vendorDTOList= new VendorListDTO(Arrays.asList(vendor1DTO,vendor2DTO));
 
-        when(mockVendorService.getAllVendors()).thenReturn(vendorDTOList);
+        given(mockVendorService.getAllVendors()).willReturn(vendorDTOList);
 
         vendorController.getAllVendors();
 
@@ -84,7 +86,7 @@ class VendorControllerTest {
         vendor1.setId(vendor1ID);
         vendor1.setName(vendor1Name);
 
-        when(mockVendorService.getVendorById(anyLong())).thenReturn(vendor1);
+        given(mockVendorService.getVendorById(anyLong())).willReturn(vendor1);
 
         mockMvc.perform(get(Constant.API_V_1_VENDORS_URL+"/"+vendor1ID.toString()).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -97,7 +99,7 @@ class VendorControllerTest {
     public void testGetByIdNotFound() throws Exception {
         Long cat1ID=99L;
 
-        when(mockVendorService.getVendorById(anyLong())).thenThrow(ResourceNotFoundException.class);
+        given(mockVendorService.getVendorById(anyLong())).willThrow(ResourceNotFoundException.class);
 
         mockMvc.perform(get(Constant.API_V_1_VENDORS_URL + "/"+cat1ID.toString())
                         .contentType(MediaType.APPLICATION_JSON))
@@ -117,7 +119,7 @@ class VendorControllerTest {
         savedVendorDTO.setId(vendor1ID);
         savedVendorDTO.setName(vendor1Name);
 
-        when(mockVendorService.createNewVendor(any(VendorDTO.class))).thenReturn(savedVendorDTO);
+        given(mockVendorService.createNewVendor(any(VendorDTO.class))).willReturn(savedVendorDTO);
 
         mockMvc.perform(post(Constant.API_V_1_VENDORS_URL).contentType(MediaType.APPLICATION_JSON)
                     .content(asJsonString(vendorDTOToSave)))
@@ -133,7 +135,8 @@ class VendorControllerTest {
         mockMvc.perform(delete(Constant.API_V_1_VENDORS_URL+"/"+ vendor1ID.toString()))
                 .andExpect(status().isOk());
 
-        verify(mockVendorService,times(1)).deleteVendor(vendor1ID);
+        then(mockVendorService).should(times(1)).deleteVendor(vendor1ID);
+        //verify(mockVendorService,times(1)).deleteVendor(vendor1ID);
     }
 
     @Test
@@ -151,8 +154,7 @@ class VendorControllerTest {
         patchedVendorDTO.setId(vendor1ID);
         patchedVendorDTO.setName(vendor1NameToPatch);
 
-
-        when(mockVendorService.patchVendor(anyLong(),any(VendorDTO.class))).thenReturn(patchedVendorDTO);
+        given(mockVendorService.patchVendor(anyLong(),any(VendorDTO.class))).willReturn(patchedVendorDTO);
 
         mockMvc.perform(patch(Constant.API_V_1_VENDORS_URL+"/"+ vendor1ID.toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -177,8 +179,7 @@ class VendorControllerTest {
         savedVendorDTO.setId(vendor1ID);
         savedVendorDTO.setName(vendor1Name);
 
-
-        when(mockVendorService.saveVendor(anyLong(),any(VendorDTO.class))).thenReturn(savedVendorDTO);
+        given(mockVendorService.saveVendor(anyLong(),any(VendorDTO.class))).willReturn(savedVendorDTO);
 
         mockMvc.perform(put(Constant.API_V_1_VENDORS_URL+"/"+ vendor1ID.toString())
                         .contentType(MediaType.APPLICATION_JSON)
