@@ -3,10 +3,13 @@ package guru.springframework.controllers.v1;
 import guru.springframework.api.v1.model.*;
 import guru.springframework.services.CategoryService;
 import guru.springframework.services.VendorService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+@Tag(name = "vendor-controller", description = "This is the Vendor controller")
 @RestController
 @RequestMapping(Constant.API_V_1_VENDORS_URL)
 public class VendorController {
@@ -17,6 +20,7 @@ public class VendorController {
         this.vendorService = vendorService;
     }
 
+    @Operation(summary = "This lists all vendors", description = "Please refer to VendorListDTO and VendorDTO for structure of return object")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public VendorListDTO getAllVendors() {
