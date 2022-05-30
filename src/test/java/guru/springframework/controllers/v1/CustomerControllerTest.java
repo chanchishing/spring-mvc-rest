@@ -65,7 +65,9 @@ class CustomerControllerTest {
 
         customerController.getAllCustomers();
 
-        mockMvc.perform(get(Constant.API_V_1_CUSTOMERS_URL).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(Constant.API_V_1_CUSTOMERS_URL)
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.customers", hasSize(2)))
                 .andExpect(jsonPath("$.customers[0].id",equalTo(cust1ID.intValue())));
@@ -83,7 +85,9 @@ class CustomerControllerTest {
 
         when(mockCustomerService.getCustomerById(anyLong())).thenReturn(cust1DTO);
 
-        mockMvc.perform(get(Constant.API_V_1_CUSTOMERS_URL+"/"+cust1ID.toString()).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(Constant.API_V_1_CUSTOMERS_URL+"/"+cust1ID.toString())
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", equalTo(cust1ID.intValue())))
                 .andExpect(jsonPath("$.firstname", equalTo(cust1Firstname)));
@@ -106,8 +110,9 @@ class CustomerControllerTest {
         when(mockCustomerService.createNewCustomer(any(CustomerDTO.class))).thenReturn(savedCustDTO);
 
         mockMvc.perform(post(Constant.API_V_1_CUSTOMERS_URL)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(asJsonString(custDTOToSave)))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(asJsonString(custDTOToSave)))
                         .andExpect(status().isCreated())
                         .andExpect(jsonPath("$.id",equalTo(cust1ID.intValue())))
                         .andExpect(jsonPath("$.firstname",equalTo(cust1Firstname)));
@@ -131,6 +136,7 @@ class CustomerControllerTest {
         when(mockCustomerService.saveCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(savedCustDTO);
 
         mockMvc.perform(put(Constant.API_V_1_CUSTOMERS_URL+"/"+ cust1ID.toString())
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(custDTOToSave))
                 )
@@ -161,6 +167,7 @@ class CustomerControllerTest {
         when(mockCustomerService.patchCustomer(anyLong(),any(CustomerDTO.class))).thenReturn(patchedCustDTO);
 
         mockMvc.perform(patch(Constant.API_V_1_CUSTOMERS_URL+"/"+ cust1ID.toString())
+                        .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(asJsonString(custDTOToPatch))
                 )
