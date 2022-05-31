@@ -1,8 +1,8 @@
 package guru.springframework.controllers.v1;
 
 import guru.springframework.api.v1.model.Constant;
-import guru.springframework.api.v1.model.CustomerDTO;
-import guru.springframework.api.v1.model.CustomerListDTO;
+import guru.springframework.model.CustomerDTO;
+import guru.springframework.model.CustomerListDTO;
 import guru.springframework.services.CustomerService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;

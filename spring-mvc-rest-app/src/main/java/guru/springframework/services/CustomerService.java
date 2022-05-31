@@ -1,7 +1,7 @@
 package guru.springframework.services;
 
-import guru.springframework.api.v1.model.CustomerDTO;
-import guru.springframework.api.v1.model.CustomerListDTO;
+import guru.springframework.model.CustomerDTO;
+import guru.springframework.model.CustomerListDTO;
 
 public interface CustomerService {
     CustomerListDTO getAllCustomers();

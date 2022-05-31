@@ -1,7 +1,7 @@
 package guru.springframework.controllers.v1;
 
-import guru.springframework.api.v1.model.CustomerDTO;
-import guru.springframework.api.v1.model.CustomerListDTO;
+import guru.springframework.model.CustomerDTO;
+import guru.springframework.model.CustomerListDTO;
 import guru.springframework.controllers.RestResponseEntityExceptionHandler;
 import guru.springframework.exceptions.ResourceNotFoundException;
 import guru.springframework.services.CustomerService;
@@ -59,7 +59,11 @@ class CustomerControllerTest {
         cust2DTO.setId(cust2ID);
         cust2DTO.setFirstname(cust2Firstname);
 
-        CustomerListDTO customerDTOList= new CustomerListDTO(Arrays.asList(cust1DTO,cust2DTO));
+        //CustomerListDTO customerDTOList= new CustomerListDTO(Arrays.asList(cust1DTO,cust2DTO));
+        CustomerListDTO customerDTOList= new CustomerListDTO();
+        customerDTOList.getCustomers().add(cust1DTO);
+        customerDTOList.getCustomers().add(cust2DTO);
+
 
         when(mockCustomerService.getAllCustomers()).thenReturn(customerDTOList);
 

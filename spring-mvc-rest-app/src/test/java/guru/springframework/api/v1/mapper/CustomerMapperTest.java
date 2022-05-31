@@ -1,7 +1,7 @@
 package guru.springframework.api.v1.mapper;
 
 import guru.springframework.api.v1.model.Constant;
-import guru.springframework.api.v1.model.CustomerDTO;
+import guru.springframework.model.CustomerDTO;
 import guru.springframework.domain.Customer;
 import org.junit.jupiter.api.Test;
 
