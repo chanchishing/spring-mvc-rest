@@ -31,7 +31,7 @@ class CustomerMapperTest {
         assertEquals(Long.valueOf(ID), customerDTO.getId());
         assertEquals(FIRSTNAME, customerDTO.getFirstname());
         assertEquals(LASTNAME, customerDTO.getLastname());
-        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+ID.toString(),customerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+ID.toString(),customerDTO.getCustomerUrl());
         
     }
 

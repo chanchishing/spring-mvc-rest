@@ -8,6 +8,7 @@ import guru.springframework.exceptions.ResourceNotFoundException;
 import guru.springframework.repositories.CustomerRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -23,7 +24,16 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerListDTO getAllCustomers() {
-        return new CustomerListDTO(customerRepository.findAll().stream().map(customerMapper::customerToCustomerDTO).collect(Collectors.toList()));
+        //to cope with no set() method for XJC generated CustomerListDTO.customers class
+        //return new CustomerListDTO(customerRepository.findAll().stream().map(customerMapper::customerToCustomerDTO).collect(Collectors.toList()));
+
+        CustomerListDTO customerListDTO = new CustomerListDTO();
+        customerRepository
+                .findAll()
+                .stream()
+                .map(customerMapper::customerToCustomerDTO)
+                .forEach(customerDTO -> {customerListDTO.getCustomers().add(customerDTO);});
+        return customerListDTO;
     }
 
     @Override

@@ -61,7 +61,7 @@ class CustomerServiceImplTest {
 
         assertEquals(testID1,customerDTO.getId());
         assertEquals(testFirstName,customerDTO.getFirstname());
-        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),customerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),customerDTO.getCustomerUrl());
 
     }
 
@@ -84,7 +84,7 @@ class CustomerServiceImplTest {
         verify(mockCustomerRepository,times(1)).save(any(Customer.class));
         assertEquals(testID1,savedCustomerDTO.getId());
         assertEquals(testFirstName,savedCustomerDTO.getFirstname());
-        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),savedCustomerDTO.getCustomerUrl());
 
     }
 
@@ -107,7 +107,7 @@ class CustomerServiceImplTest {
         verify(mockCustomerRepository,times(1)).save(any(Customer.class));
         assertEquals(testID1,savedCustomerDTO.getId());
         assertEquals(testFirstName,savedCustomerDTO.getFirstname());
-        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),savedCustomerDTO.getCustomer_url());
+        assertEquals(Constant.API_V_1_CUSTOMERS_URL+"/"+testID1.toString(),savedCustomerDTO.getCustomerUrl());
 
     }
 

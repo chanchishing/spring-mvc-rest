@@ -13,7 +13,7 @@ import org.mapstruct.factory.Mappers;
 public interface CustomerMapper {
     CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-    @Mapping(target = "customer_url", expression = "java(guru.springframework.api.v1.model.Constant.API_V_1_CUSTOMERS_URL+\"/\"+customer.getId())")
+    @Mapping(target = "customerUrl", expression = "java(guru.springframework.api.v1.model.Constant.API_V_1_CUSTOMERS_URL+\"/\"+customer.getId())")
     CustomerDTO customerToCustomerDTO(Customer customer);
 
     Customer customerDTOToCustomer(CustomerDTO customerDTO);
